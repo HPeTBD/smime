@@ -303,3 +303,4 @@ echo ....
 echo.
 echo .... mozesz teraz zamknac to okno
 pause
+
