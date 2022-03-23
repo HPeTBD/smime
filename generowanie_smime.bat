@@ -2,9 +2,9 @@
 :: podwójnie, bo Win7 wyrzuca błąd ...@echo (po wyedytowaniu Notatnikiem systemowym) i wszystko się sypie...
 @echo off
 echo.
-echo v1 17/02/2022
+echo v2 23/03/2022
 echo.
-echo Generowanie wlasnego klucza S/MIME.
+echo Skrypt generujacy klucz S/MIME.
 echo Szyfrowanie i podpisywanie e-maili.
 :: [Certyfikat niekwalifikowany]
 ::
@@ -12,13 +12,14 @@ echo Szyfrowanie i podpisywanie e-maili.
 :: wykorzystuje program openssl.exe - testowano na wersji OpenSSL 1.1.1m i 1.1.1i (msys2)
 :: do sprawdzenia poprawności użyto guiDumpASN-ng, xca.exe 2.4.0
 :: ustawienia podobne do klucza "Free S/MIME Certificates" od firmy Actalis S.p.A.
+:: https://www.actalis.it/documenti-it/caact-free-s-mime-certificates-policy.aspx  [strony 11-12]
 ::
 :: program wykonuje się w katalogu w którym znajduje się .bat (pushd)
 ::
 :: OpenSLL dla Windows możesz pobrać ze strony:
 :: https://wiki.openssl.org/index.php/Binaries
 ::
-:: najlepiej tworzyć klucz w ram-dysku, skopiować foldery priv\ i z kluczem .p12 na pendriva; folder pub\ udostępnić
+:: najlepiej tworzyć klucz w ram-dysku (bezpieczeństwo, nie trzeba robić shred), skopiować foldery priv\ i z kluczem .p12 na pendriva; folder pub\ udostępnić
 :: ImDisk Virtual Disk Driver  https://www.ltr-data.se/opencode.html/#ImDisk
 :: RAM dysk - aktywuj na partycji "R:\" cmd:  imdisk -a -o rem,awe -m R: -s 512M & format R: /fs:exFAT /a:32K /q /y & pause
 :: RAM dysk - odłącz cmd:  imdisk -D -m R:
@@ -29,21 +30,27 @@ echo Szyfrowanie i podpisywanie e-maili.
 ::
 :: https://www.dalesandro.net/create-self-signed-smime-certificates/
 :: https://www.globalsign.com/en/resources/white-paper-smime-compatibility.pdf
+:: https://anomail.pl/generator-certyfikatow-smime/
+:: https://security.stackexchange.com/a/219058
+:: https://fam.tuwien.ac.at/~schamane/_/blog/2019-02-13_thunderbird_selfsigned.htm
+
+
+
 
 
 
 
 set openssl="C:\Program Files\OpenSSL-Win64\bin\openssl.exe"
 
-set o=Elżbieta Dmoch
-set email=czerwone_sloneczko@edu.pl
+set o=Jarosław Kowalski
+set email=a@edu.pl
 set client_waznosc_dni=3650
 
 
 
 
 set dlugosc_klucza=2048
-set dlugosc_klucza_root=4096
+set dlugosc_klucza_root=2048
 set skrot=sha256
 set cn=%o% (%date%)
 set /A root_waznosc_dni=%client_waznosc_dni% + 1
@@ -64,12 +71,13 @@ set klient_crt_inf=klient.crt.txt
 set serial1=sn01.srl
 
 set klucz_publiczny=klucz_publiczny.p7b
-set klucz_publiczny_th1=klucz_thunderbird01_root.crt
-set klucz_publiczny_th2=klucz_thunderbird02.crt
-set fingerprint=skrot.txt
+set klucz_publiczny_th1=01root.crt
+set klucz_publiczny_th2=02user.crt
+set fingerprint=fingerprint.txt
 set checksum=checksum.sha256
 set pass=tmp\pass.txt
-set klucz_do_uzytku_wewnetrznego=TWOJ_KLUCZ_PRYWATNY
+set version=version.txt
+set klucz_do_uzytku_wewnetrznego=KLUCZ_PRYWATNY
 set klucz_do_uzytku_wewnetrznego_nazwa=TWOJ_KLUCZ.p12
 
 :: Kreator na pewnym etapie wyrzuci błąd: Can't open C:\Program Files (x86)\Common Files\SSL/openssl.cnf for reading ...
@@ -85,6 +93,8 @@ echo.
 mkdir priv
 mkdir pub
 mkdir tmp
+
+%openssl% version -a > priv\%version%
 
 echo.
 echo ....::::  Tworzenie klucza ROOT  ::::....
@@ -137,6 +147,7 @@ echo extendedKeyUsage = clientAuth,emailProtection>> priv\%klient_cnf%
 echo subjectKeyIdentifier = hash>> priv\%klient_cnf%
 echo authorityKeyIdentifier = keyid:always,issuer:always>> priv\%klient_cnf%
 echo subjectAltName = email:%email%>> priv\%klient_cnf%
+:: echo subjectAltName = email:%email%, email:b@edu.pl, email:c@edu.pl>> priv\%klient_cnf%
 
 echo.
 echo ....::::  Generowanie wniosku certyfikacyjnego CSR  ::::....
@@ -162,6 +173,8 @@ echo ....::::  Tworzenie kluczy publicznych w folderze pub\  ::::....
 :: co z security.enterprise_roots.enabled ?
 %openssl% x509 -in priv\%root_crt% > pub\%klucz_publiczny_th1%
 %openssl% x509 -in priv\%klient_crt% > pub\%klucz_publiczny_th2%
+
+
 
 echo.
 echo ....::::  Zapis skrotow klucza (odciskow) w pub\%fingerprint%  ::::....
@@ -263,6 +276,8 @@ echo ....
 echo ....
 echo ....      pub\%klucz_publiczny%
 echo ....      Klucz publiczny -- eksport do innych osob
+echo ....      pub\%klucz_publiczny_th1% -- [Thunderbird]
+echo ....      pub\%klucz_publiczny_th2% -- [Thunderbird]
 echo ....
 echo .... przeslij go klientom, znajomym. Musza zaimportowac go w swoich
 echo .... programach. Porownajcie odciski klucza z pliku pub\%fingerprint%
@@ -299,6 +314,9 @@ echo ....
 :: http://lab.kti.gda.pl/pki/PKI-Instrukcja.pdf
 :: https://web.archive.org/web/20120525041714/http://www.tc.umn.edu:80/~brams006/selfsign.html
 :: https://pg.edu.pl/documents/1112617/28513726/Public%20Key%20Infrastructure.pdf
+:: https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs
+:: https://www.ionos.com/digitalguide/e-mail/e-mail-security/smime-the-standard-method-for-e-mail-encryption/
+:: https://kb.mozillazine.org/Getting_an_SMIME_certificate
 :: https://www.schneier.com/wp-content/uploads/2016/02/paper-pki.pdf
 echo.
 echo .... mozesz teraz zamknac to okno

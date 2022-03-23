@@ -1,5 +1,5 @@
 Generowanie własnego klucza S/MIME.
-v1 17/02/2022
+v2 23/03/2022
 
 · kompaktowe rozwiązanie: skrypt potrzebuje tylko openssl.exe
 · wysyłaj szyfrowane maile dowolnym (praktycznie) programem pocztowym
