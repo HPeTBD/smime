@@ -2,7 +2,7 @@
 :: podwójnie, bo Win7 wyrzuca błąd ...@echo (po wyedytowaniu Notatnikiem systemowym) i wszystko się sypie...
 @echo off
 echo.
-echo v2 23/03/2022
+echo v3 24/03/2022
 echo.
 echo Skrypt generujacy klucz S/MIME.
 echo Szyfrowanie i podpisywanie e-maili.
@@ -21,7 +21,7 @@ echo Szyfrowanie i podpisywanie e-maili.
 ::
 :: najlepiej tworzyć klucz w ram-dysku (bezpieczeństwo, nie trzeba robić shred), skopiować foldery priv\ i z kluczem .p12 na pendriva; folder pub\ udostępnić
 :: ImDisk Virtual Disk Driver  https://www.ltr-data.se/opencode.html/#ImDisk
-:: RAM dysk - aktywuj na partycji "R:\" cmd:  imdisk -a -o rem,awe -m R: -s 512M & format R: /fs:exFAT /a:32K /q /y & pause
+:: RAM dysk - aktywuj na partycji "R:\" cmd:  imdisk -a -o rem,awe -m R: -s 256M & format R: /fs:exFAT /a:32K /q /y & pause
 :: RAM dysk - odłącz cmd:  imdisk -D -m R:
 ::
 ::         Schemat klucza:
@@ -115,7 +115,7 @@ echo C=PL>> priv\%root_cnf%
 echo O=%o%>> priv\%root_cnf%
 echo CN=%cn%>> priv\%root_cnf%
 echo [ root_ext ]>> priv\%root_cnf%
-echo basicConstraints = critical,CA:TRUE>> priv\%root_cnf%
+echo basicConstraints = critical,CA:TRUE,pathlen:1>> priv\%root_cnf%
 echo keyUsage = critical,keyCertSign,cRLSign>> priv\%root_cnf%
 echo extendedKeyUsage = clientAuth,emailProtection>> priv\%root_cnf%
 echo subjectKeyIdentifier = hash>> priv\%root_cnf%
@@ -160,7 +160,7 @@ echo ....::::  Generowanie s/n  ::::....
 
 echo.
 echo ....::::  Podpisanie CSR przez certyfikat Root CA  ::::....
-%openssl% x509 -req -days %client_waznosc_dni% -%skrot% -in priv\%klient_csr% -CA priv\%root_crt% -CAserial priv\%serial1% -CAkey priv\%root_klucz% -out priv\%klient_crt% -extfile priv\%klient_cnf% -extensions smime -addtrust emailProtection -trustout
+%openssl% x509 -req -days %client_waznosc_dni% -%skrot% -in priv\%klient_csr% -CA priv\%root_crt% -CAserial priv\%serial1% -CAkey priv\%root_klucz% -out priv\%klient_crt% -extfile priv\%klient_cnf% -extensions smime
 %openssl% x509 -in priv\%klient_crt% -text -noout > priv\%klient_crt_inf%
 
 echo.
