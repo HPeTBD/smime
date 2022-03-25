@@ -128,4 +128,26 @@ Piotr Niedopomagalski | pomoc@edu.pl | [p7b](/pomoc.p7b) | [crt](/pomoc.crt) | `
 ## [Dodatkowe bezpieczeństwo] Stosuj klucze zewnętrzne Yubico/Nitrokey
 Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś klucza prywatnego (.p12, katalog priv) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
 
-![nie bądź januszem](janusz.jpg)
+![01](img/01.png)
+
+![02](img/02.png)
+
+![03](img/03.png)
+
+![04](img/04.png)
+
+![05](img/05.png)
+
+![06](img/06.png)
+
+![07](img/07.png)
+
+![08](img/08.png)
+
+![09](img/09.png)
+
+![10](img/10.png)
+
+![11](img/11.png)
+
+![12](img/12.png)
