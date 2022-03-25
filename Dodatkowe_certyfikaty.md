@@ -7,12 +7,12 @@ Co jeśli prowadzimy firmę i chcemy każdemu pracownikowi utworzyć certyfikat?
 Utworzymy listę pracowników i zrobimy listę adresów, pod które trzeba zrobić certyfikaty.
 
 ```
-{
+
 Firma sp. z o.o.
 PL
 Mazowieckie
 Warszawa
-}
+
 ```
 
 Pracownik | stanowisko | adres e-mail
@@ -26,10 +26,10 @@ Piotr Niedopomagalski | technik it | `pomoc@edu.pl`
 ## Tworzenie głównego i pierwszego certyfikatu z listy (`generowanie_smime.bat`)
 Trzeba **ręcznie** skonfigurować główny skrypt. Z przykładu powyżej będzie wyglądać np. tak:
 
-### prezes ==generowanie_smime.bat==
+### prezes generowanie_smime.bat
 
 ```
-{
+
 set o=Firma sp. z o.o.
 set email=jkowalski@edu.pl
 ...
@@ -53,16 +53,16 @@ echo organizationalUnitName=Prezes>> priv\%klient_cnf%
 echo emailAddress=%email%>> priv\%klient_cnf%
 ...
 echo subjectAltName = email:%email%>> priv\%klient_cnf%
-}
+
 ```
 
 ## Tworzenie następnych certyfikatów e-mail (`certyfikat_pracownika.bat`)
 plik `certyfikat_pracownika_....bat` musi znajdować się "obok" głównego skryptu generującego (`generowanie_smime.bat`) w folderze.
 
-### wiceprezes ==certyfikat_pracownika_1.bat==
+### wiceprezes certyfikat_pracownika_1.bat
 
 ```
-{
+
 set cn=Adam Nowak
 set o=Firma sp. z o.o.
 set email=anowak@edu.pl
@@ -75,13 +75,13 @@ echo organizationalUnitName=Wiceprezes>> %alias%\priv\%klient_cnf%
 echo emailAddress=%email%>> %alias%\priv\%klient_cnf%
 ...
 echo subjectAltName = email:%email%, email:szkolenia@edu.pl>> %alias%\priv\%klient_cnf%
-}
-```
-
-### sekretarka ==certyfikat_pracownika_2.bat==
 
 ```
-{
+
+### sekretarka certyfikat_pracownika_2.bat
+
+```
+
 set cn=Grażyna Kowalska
 set o=Firma sp. z o.o.
 set email=biuro@edu.pl
@@ -94,18 +94,18 @@ echo organizationalUnitName=Sekretariat>> %alias%\priv\%klient_cnf%
 echo emailAddress=%email%>> %alias%\priv\%klient_cnf%
 ...
 echo subjectAltName = email:%email%>> %alias%\priv\%klient_cnf%
-}
+
 ```
 
-### następni pracownicy ==certyfikat_pracownika_....bat== jw.
+### następni pracownicy certyfikat_pracownika_....bat jw.
 
-### ==Sprawdź folder `test` i przetestuj czy pliki działają na twoim urządzeniu, programie pocztowym.==
+### Sprawdź folder `test` i przetestuj czy pliki działają na twoim urządzeniu, programie pocztowym.
 
 
 ## Udostępnianie certyfikatów (kluczy publicznych) na stronie www firmy
 Można to zrobić w takiej formie:
 
- | | adres e-mail | certyfikat Office | certyfikat Thunderbird | odcisk SHA-1
+|| adres e-mail | certyfikat Office | certyfikat Thunderbird | odcisk SHA-1||
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 Firma sp. z o.o. |  |  | `pub/01root.crt` | `pub/fingerprint.txt`
 Jan Kowalski | jkowalski@edu.pl | `pub/klucz_publiczny.p7b` | `pub/02user.crt` | `pub/fingerprint.txt`
@@ -116,7 +116,7 @@ Piotr Niedopomagalski | pomoc@edu.pl | `pracownik_4/pub/klucz_publiczny.p7b` | `
 
 Będzie to wyglądać mniej więcej tak:
 
- | | adres e-mail | certyfikat Office | certyfikat Thunderbird | odcisk SHA-1
+|| adres e-mail | certyfikat Office | certyfikat Thunderbird | odcisk SHA-1||
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 Firma sp. z o.o. |  |  | [Cert. główny](/firma.crt) | `B9:34:D9:18:12:7B:89:1D:44:DF:E8:62:1F:88:41:B8:47:E5:FB:53`
 Jan Kowalski | jkowalski@edu.pl | [p7b](/jkowalski.p7b) | [crt](/jkowalski.crt) | `B4:F7:27:92:7F:1F:A2:5A:AC:12:EC:FA:E0:F2:1A:41:98:35:04:37`
@@ -126,6 +126,6 @@ Aneta Rachunek | faktury@edu.pl | [p7b](/faktury.p7b) | [crt](/faktury.crt) | `2
 Piotr Niedopomagalski | pomoc@edu.pl | [p7b](/pomoc.p7b) | [crt](/pomoc.crt) | `C9:C7:51:19:88:0E:E9:9C:EB:66:B4:29:34:B9:ED:36:6F:20:82:7B`
 
 ## [Dodatkowe bezpieczeństwo] Stosuj klucze zewnętrzne Yubico/Nitrokey
-Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś klucza prywatnego (.==p12==, katalog ==priv==) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
+Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś klucza prywatnego (.p12, katalog priv) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
 
 ![nie bądź januszem](janusz.jpg)
