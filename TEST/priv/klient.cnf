@@ -1,0 +1,17 @@
+[ req ]
+default_md = sha256
+distinguished_name = client_dn
+utf8 = yes
+prompt = no
+[ client_dn ]
+commonName=Jan Kowalski
+organizationName=Firma sp. z o.o.
+organizationalUnitName=Prezes
+emailAddress=jkowalski@edu.pl
+[ smime ]
+basicConstraints = critical,CA:FALSE
+keyUsage = critical,digitalSignature,keyEncipherment
+extendedKeyUsage = clientAuth,emailProtection
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+subjectAltName = email:jkowalski@edu.pl

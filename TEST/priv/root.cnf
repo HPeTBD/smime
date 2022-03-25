@@ -1,0 +1,19 @@
+[ req ]
+default_md = sha256
+distinguished_name = root_dn
+x509_extensions = root_ext
+req_extensions = root_ext
+utf8 = yes
+prompt = no
+[ root_dn ]
+commonName=Firma sp. z o.o. CA e-mail
+organizationName=Firma sp. z o.o.
+countryName=PL
+stateOrProvinceName=Mazowieckie
+localityName=Warszawa
+[ root_ext ]
+basicConstraints = critical,CA:TRUE,pathlen:1
+keyUsage = critical,keyCertSign,cRLSign
+extendedKeyUsage = clientAuth,emailProtection
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid

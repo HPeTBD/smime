@@ -1,0 +1,62 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            30:bc:4f:82:94:ea:8e:7e:13:d0:f6:0a:4e:66:57:74:28:bc:85:bb
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN = Firma sp. z o.o. CA e-mail, O = Firma sp. z o.o., C = PL, ST = Mazowieckie, L = Warszawa
+        Validity
+            Not Before: Mar 25 20:36:04 2022 GMT
+            Not After : Mar 23 20:36:04 2032 GMT
+        Subject: CN = Firma sp. z o.o. CA e-mail, O = Firma sp. z o.o., C = PL, ST = Mazowieckie, L = Warszawa
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:ac:89:28:90:65:1a:53:e6:04:75:c2:21:03:4e:
+                    60:28:38:c1:ac:0c:19:34:e3:db:0f:11:04:8e:81:
+                    ad:c0:21:54:87:11:a0:b9:8f:91:7a:e7:de:e8:1b:
+                    25:73:00:2d:bc:16:bb:74:2d:cd:07:b9:d0:f6:35:
+                    a0:a8:a7:b8:3a:9d:8a:f0:e2:09:b4:67:bc:b1:03:
+                    d9:3e:0e:fc:f9:76:ee:bc:67:b5:1f:f4:73:56:cc:
+                    a3:10:49:d5:f9:08:3a:f6:83:79:8a:4c:e1:6d:bc:
+                    a4:e9:71:45:d3:34:d3:eb:ad:94:b4:1c:a4:dc:c0:
+                    d8:ee:e5:69:2c:1a:43:ad:14:1f:34:bb:26:fc:a9:
+                    01:54:42:1b:cd:09:57:c7:04:c4:16:f3:ae:a3:5b:
+                    b0:5c:71:1b:6b:fa:fd:d5:9a:29:13:07:86:ee:79:
+                    32:2b:3f:6b:dc:bf:ef:03:18:78:7f:eb:17:ef:59:
+                    45:a5:56:9e:e5:83:27:03:be:21:26:19:cd:00:df:
+                    00:79:ac:2f:f2:b0:d0:78:85:8f:1e:de:c7:3e:79:
+                    56:9e:db:d3:48:b2:3b:57:2d:19:06:bd:57:5d:fa:
+                    48:b8:8c:63:78:ff:b4:7c:cc:13:8c:d3:21:e6:2d:
+                    2a:da:f7:fa:1b:a2:3d:9a:97:f4:0e:7e:8e:19:43:
+                    f9:05
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: critical
+                CA:TRUE, pathlen:1
+            X509v3 Key Usage: critical
+                Certificate Sign, CRL Sign
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication, E-mail Protection
+            X509v3 Subject Key Identifier: 
+                40:43:E7:D6:AE:4A:1F:04:48:EC:CE:EE:C1:31:6A:83:40:43:13:EF
+            X509v3 Authority Key Identifier: 
+                keyid:40:43:E7:D6:AE:4A:1F:04:48:EC:CE:EE:C1:31:6A:83:40:43:13:EF
+
+    Signature Algorithm: sha256WithRSAEncryption
+         64:74:7f:5a:d8:22:7e:82:49:21:c2:e3:c2:b5:ae:b0:95:4e:
+         8d:da:80:c3:03:6b:45:54:38:8e:b2:19:e8:ef:fd:0d:e0:58:
+         db:8b:d9:88:f2:39:c2:d3:a3:ee:f6:91:dc:0b:2a:05:88:39:
+         4c:aa:4f:df:3e:3c:3e:76:e1:c0:ba:a6:2b:77:29:35:89:61:
+         6b:3c:a2:96:77:90:92:e2:ce:c9:a6:7a:2e:af:e8:67:8e:b2:
+         76:61:e1:d5:9b:98:a4:ed:0e:66:28:5a:c4:99:db:b4:f7:e0:
+         61:8e:3a:fd:f6:0c:08:ad:93:5b:05:76:6d:93:6b:51:12:64:
+         3b:74:c0:00:ca:53:fd:70:3a:c3:28:17:71:81:77:1b:1c:3d:
+         2f:a6:36:99:51:24:7a:91:da:bd:df:2b:0e:a9:ba:18:eb:4e:
+         05:e5:82:a2:41:9e:9d:e7:61:6a:94:0b:c1:ca:3a:23:5b:33:
+         20:dd:68:e8:fc:f0:74:b4:32:ba:d5:5a:68:d2:ca:69:bf:9b:
+         57:a8:74:39:22:a2:c9:79:99:09:ec:2c:94:c2:fb:e4:ec:f1:
+         47:63:52:0a:c4:7f:23:65:2a:7c:86:54:68:3a:03:4a:23:97:
+         20:04:92:f5:6c:23:c8:e3:8d:a3:95:3c:65:0f:81:7f:8a:97:
+         91:5f:34:72
