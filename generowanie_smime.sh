@@ -1,5 +1,5 @@
 echo -e "\n"
-echo "v3 24/03/2022"
+echo "v4 25/03/2022"
 echo -e "\n"
 echo "Skrypt generujacy klucz S/MIME."
 echo "Szyfrowanie i podpisywanie e-maili."
@@ -106,9 +106,11 @@ echo req_extensions = root_ext>> priv/$root_cnf
 echo utf8 = yes>> priv/$root_cnf
 echo prompt = no>> priv/$root_cnf
 echo [ root_dn ]>> priv/$root_cnf
-echo C=PL>> priv/$root_cnf
-echo O=$o>> priv/$root_cnf
-echo CN=$cn>> priv/$root_cnf
+echo commonName=$cn>> priv/$root_cnf
+echo organizationName=$o>> priv/$root_cnf
+echo countryName=PL>> priv/$root_cnf
+# echo stateOrProvinceName=Mazowieckie>> priv/$root_cnf
+# echo localityName=Warszawa>> priv/$root_cnf
 echo [ root_ext ]>> priv/$root_cnf
 echo basicConstraints = critical,CA:TRUE,pathlen:1>> priv/$root_cnf
 echo keyUsage = critical,keyCertSign,cRLSign>> priv/$root_cnf
@@ -134,7 +136,10 @@ echo distinguished_name = client_dn>> priv/$klient_cnf
 echo utf8 = yes>> priv/$klient_cnf
 echo prompt = no>> priv/$klient_cnf
 echo [ client_dn ]>> priv/$klient_cnf
-echo CN=$email>> priv/$klient_cnf
+echo commonName=$email>> priv/$klient_cnf
+# echo organizationName=$o>> priv/$klient_cnf
+# echo organizationalUnitName=Dział handlowy>> priv/$klient_cnf
+# echo emailAddress=$email>> priv/$klient_cnf
 echo [ smime ]>> priv/$klient_cnf
 echo basicConstraints = critical,CA:FALSE>> priv/$klient_cnf
 echo keyUsage = critical,digitalSignature,keyEncipherment>> priv/$klient_cnf

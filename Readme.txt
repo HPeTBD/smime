@@ -1,5 +1,5 @@
 Generowanie własnego klucza S/MIME.
-v3 24/03/2022
+v4 25/03/2022
 
 · kompaktowe rozwiązanie: skrypt potrzebuje tylko openssl.exe
 · wysyłaj szyfrowane maile dowolnym (praktycznie) programem pocztowym
@@ -29,3 +29,11 @@ Skrypt pod Linuxa :
 -------------------
 
 "generowanie_smime.sh"
+
+---------------------
+DODATKOWE CERTYFIKATY
+DLA PRACOWNIKÓW
+TWOJEJ FIRMY
+---------------------
+
+"Dodatkowe_certyfikaty.md"

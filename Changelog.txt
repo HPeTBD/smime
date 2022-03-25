@@ -1,3 +1,11 @@
+v4 25/03/2022
+
+· dodano możliwość generowania "pracowniczych" certyfikatów
+
+· dodano screeny z Xubuntu
+
+· dodano folder 'TEST' z wygenerowanymi certyfikatami
+
 v3 24/03/2022
 
 · dodano skrypt pod Linuxa
