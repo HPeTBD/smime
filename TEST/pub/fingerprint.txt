@@ -1,0 +1,7 @@
+Odcisk klucza Firma sp. z o.o. CA e-mail [główny] :
+SHA256 Fingerprint=C0:A6:C0:E5:7C:80:21:C2:04:36:BE:B6:01:FA:0B:D6:D8:E9:48:51:97:4B:B4:08:A6:00:12:76:D3:FD:58:92
+SHA1 Fingerprint=56:92:CD:2F:3D:83:A1:56:9C:6D:87:5A:6F:FE:3C:84:C1:6D:CA:5D
+
+Odcisk klucza jkowalski@edu.pl [podrzędny] :
+SHA256 Fingerprint=86:3D:02:18:A4:40:03:7B:9D:45:7D:3B:2F:D9:3A:78:4B:B0:82:49:66:66:69:9F:F7:37:DA:50:DE:15:04:2A
+SHA1 Fingerprint=8D:F3:82:81:F0:7A:87:F8:CC:84:A5:A4:5B:2D:F9:6A:1C:77:52:20
