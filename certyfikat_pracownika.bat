@@ -74,8 +74,13 @@ echo keyUsage = critical,digitalSignature,keyEncipherment>> %alias%\priv\%klient
 echo extendedKeyUsage = clientAuth,emailProtection>> %alias%\priv\%klient_cnf%
 echo subjectKeyIdentifier = hash>> %alias%\priv\%klient_cnf%
 echo authorityKeyIdentifier = keyid:always,issuer:always>> %alias%\priv\%klient_cnf%
-echo subjectAltName = email:%email%>> %alias%\priv\%klient_cnf%
-:: echo subjectAltName = email:%email%, email:szkolenia@edu.pl>> %alias%\priv\%klient_cnf%
+echo subjectAltName = @alt_section>> priv\%klient_cnf%
+echo [alt_section]>> priv\%klient_cnf%
+echo email.1=%email%>> priv\%klient_cnf%
+:: echo email.2=b@edu.pl>> priv\%klient_cnf%
+:: echo email.3=c@edu.pl>> priv\%klient_cnf%
+
+
 
 echo.
 echo ....::::  Generowanie wniosku certyfikacyjnego CSR  ::::....
@@ -135,6 +140,9 @@ echo ....
 
 %openssl% rand -base64 15 > %alias%\tmp\%pass%
 %openssl% pkcs12 -export -name "%email%" -descert -macalg SHA1 -in %alias%\tmp\kombajn -out %alias%\%klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passout file:%alias%\tmp\%pass%
+echo.
+%openssl% pkcs12 -info -nokeys -noout -in %alias%\%klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passin file:%alias%\tmp\%pass%
+echo.
 
 echo ....
 echo ....::::  zrobione!  ::::....

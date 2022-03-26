@@ -24,9 +24,9 @@ Aneta Rachunek | księgowa | `faktury@edu.pl`
 Piotr Niedopomagalski | technik it | `pomoc@edu.pl`
 
 ## Tworzenie głównego i pierwszego certyfikatu z listy (`generowanie_smime.bat`)
-Trzeba **ręcznie** skonfigurować główny skrypt. Z przykładu powyżej będzie wyglądać np. tak:
+Trzeba **ręcznie** skonfigurować skrypt. Z przykładu powyżej będzie wyglądać np. tak (znajdź i zmień poniższe wiersze na własne):
 
-### prezes generowanie_smime.bat
+### prezes `generowanie_smime.bat`
 
 ```
 
@@ -37,29 +37,21 @@ set cn=Firma sp. z o.o. CA e-mail
 ...
 echo ....::::  Generowanie ustawien dla Root CA  ::::....
 ...
-echo [ root_dn ]>> priv\%root_cnf%
-echo commonName=%cn%>> priv\%root_cnf%
-echo organizationName=%o%>> priv\%root_cnf%
-echo countryName=PL>> priv\%root_cnf%
 echo stateOrProvinceName=Mazowieckie>> priv\%root_cnf%
 echo localityName=Warszawa>> priv\%root_cnf%
 ...
 echo ....::::  Generowanie ustawien dla certyfikatu e-mail  ::::....
 ...
-echo [ client_dn ]>> priv\%klient_cnf%
 echo commonName=Jan Kowalski>> priv\%klient_cnf%
 echo organizationName=%o%>> priv\%klient_cnf%
 echo organizationalUnitName=Prezes>> priv\%klient_cnf%
-echo emailAddress=%email%>> priv\%klient_cnf%
-...
-echo subjectAltName = email:%email%>> priv\%klient_cnf%
 
 ```
 
 ## Tworzenie następnych certyfikatów e-mail (`certyfikat_pracownika.bat`)
 plik `certyfikat_pracownika_....bat` musi znajdować się "obok" głównego skryptu generującego (`generowanie_smime.bat`) w folderze.
 
-### wiceprezes certyfikat_pracownika_1.bat
+### wiceprezes `certyfikat_pracownika_1.bat`
 
 ```
 
@@ -68,17 +60,14 @@ set o=Firma sp. z o.o.
 set email=anowak@edu.pl
 set alias=pracownik_1
 ...
-echo [ client_dn ]>> %alias%\priv\%klient_cnf%
-echo commonName=%cn%>> %alias%\priv\%klient_cnf%
-echo organizationName=%o%>> %alias%\priv\%klient_cnf%
 echo organizationalUnitName=Wiceprezes>> %alias%\priv\%klient_cnf%
-echo emailAddress=%email%>> %alias%\priv\%klient_cnf%
 ...
-echo subjectAltName = email:%email%, email:szkolenia@edu.pl>> %alias%\priv\%klient_cnf%
+echo email.2=szkolenia@edu.pl>> priv\%klient_cnf%
+
 
 ```
 
-### sekretarka certyfikat_pracownika_2.bat
+### sekretarka `certyfikat_pracownika_2.bat`
 
 ```
 
@@ -87,19 +76,14 @@ set o=Firma sp. z o.o.
 set email=biuro@edu.pl
 set alias=pracownik_2
 ...
-echo [ client_dn ]>> %alias%\priv\%klient_cnf%
-echo commonName=%cn%>> %alias%\priv\%klient_cnf%
-echo organizationName=%o%>> %alias%\priv\%klient_cnf%
 echo organizationalUnitName=Sekretariat>> %alias%\priv\%klient_cnf%
-echo emailAddress=%email%>> %alias%\priv\%klient_cnf%
-...
-echo subjectAltName = email:%email%>> %alias%\priv\%klient_cnf%
 
 ```
 
-### następni pracownicy certyfikat_pracownika_....bat jw.
+### następni pracownicy `certyfikat_pracownika_....bat` jw.
+Jeśli generowany jest klucz np. po 1 roku od wygenerowania głównego, to trzeba zmienić `set client_waznosc_dni=3650`, żeby ważność certyfikatu następnego pracownika nie była dłuższa niż certyfikatu `priv\root.crt`. Dokładną datę wygaśnięcia znajdziesz w pliku `priv\root.crt.txt`: ("Not After : ...")
 
-### Sprawdź folder `test` i przetestuj czy pliki działają na twoim urządzeniu, programie pocztowym.
+### Sprawdź folder `TEST` i przetestuj czy pliki działają na twoim urządzeniu, w twoim programie pocztowym.
 
 
 ## Udostępnianie certyfikatów (kluczy publicznych) na stronie www firmy
@@ -118,15 +102,15 @@ Będzie to wyglądać mniej więcej tak:
 
 || adres e-mail | certyfikat Office | certyfikat Thunderbird | odcisk SHA-1||
 | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-Firma sp. z o.o. |  |  | [Cert. główny](/firma.crt) | `B9:34:D9:18:12:7B:89:1D:44:DF:E8:62:1F:88:41:B8:47:E5:FB:53`
-Jan Kowalski | jkowalski@edu.pl | [p7b](/jkowalski.p7b) | [crt](/jkowalski.crt) | `B4:F7:27:92:7F:1F:A2:5A:AC:12:EC:FA:E0:F2:1A:41:98:35:04:37`
-Adam Nowak | anowak@edu.pl, szkolenia@edu.pl | [p7b](/anowak.p7b) | [crt](/anowak.crt) | `D6:96:44:C2:EF:E6:DA:31:58:60:D2:C6:61:7E:51:3E:6C:CD:55:03`
-Grażyna Kowalska | biuro@edu.pl | [p7b](/biuro.p7b) | [crt](/biuro.crt) | `43:02:6E:C3:CE:73:2F:E1:30:FB:62:77:C2:C4:B5:87:1B:5D:CA:3B`
-Aneta Rachunek | faktury@edu.pl | [p7b](/faktury.p7b) | [crt](/faktury.crt) | `2E:DC:7C:B6:02:29:00:A0:B9:F3:96:0A:4D:78:7D:12:BF:44:33:2B`
-Piotr Niedopomagalski | pomoc@edu.pl | [p7b](/pomoc.p7b) | [crt](/pomoc.crt) | `C9:C7:51:19:88:0E:E9:9C:EB:66:B4:29:34:B9:ED:36:6F:20:82:7B`
+Firma sp. z o.o. |  |  | [Cert. główny](/firma.crt) | `32:9A:CC:A2:47:06:78:3E:A1:0F:01:C3:A8:F6:55:3F:ED:B4:42:DF`
+Jan Kowalski | jkowalski@edu.pl | [p7b](/jkowalski.p7b) | [crt](/jkowalski.crt) | `08:68:4D:38:82:69:48:5D:EE:71:9D:90:8C:7D:BE:DD:C8:7B:F5:CF`
+Adam Nowak | anowak@edu.pl, szkolenia@edu.pl | [p7b](/anowak.p7b) | [crt](/anowak.crt) | `71:ED:52:63:11:9E:20:F2:B3:8B:25:18:05:A4:51:77:A6:B8:20:DC`
+Grażyna Kowalska | biuro@edu.pl | [p7b](/biuro.p7b) | [crt](/biuro.crt) | `9B:68:8A:6A:EB:AB:98:AD:0B:5D:D0:C8:19:E0:21:3A:5C:08:9D:83`
+Aneta Rachunek | faktury@edu.pl | [p7b](/faktury.p7b) | [crt](/faktury.crt) | `92:E7:5D:02:13:09:67:60:83:0C:28:8A:FE:6F:F4:D2:5F:8C:B6:AE`
+Piotr Niedopomagalski | pomoc@edu.pl | [p7b](/pomoc.p7b) | [crt](/pomoc.crt) | `AB:50:59:38:41:EC:3D:39:05:20:DD:67:8A:C7:C6:EF:62:F9:E2:85`
 
 ## [Dodatkowe bezpieczeństwo] Stosuj klucze zewnętrzne Yubico/Nitrokey
-Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś klucza prywatnego (.p12, katalog priv) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
+Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś kluczy prywatnych (.p12, katalog priv) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
 
 ![01](img/01.png)
 
@@ -151,3 +135,5 @@ Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś klucza prywatnego
 ![11](img/11.png)
 
 ![12](img/12.png)
+
+[![szyfrowanie poczty](https://img.youtube.com/vi/U1rUYRbBL_c/0.jpg)](https://www.youtube.com/watch?v=U1rUYRbBL_c)

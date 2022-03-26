@@ -2,7 +2,7 @@
 :: podwójnie, bo Win7 wyrzuca błąd ...@echo (po wyedytowaniu Notatnikiem systemowym) i wszystko się sypie...
 @echo off
 echo.
-echo v4 25/03/2022
+echo v5 26/03/2022
 echo.
 echo Skrypt generujacy klucz S/MIME.
 echo Szyfrowanie i podpisywanie e-maili.
@@ -33,8 +33,7 @@ echo Szyfrowanie i podpisywanie e-maili.
 :: https://anomail.pl/generator-certyfikatow-smime/
 :: https://security.stackexchange.com/a/219058
 :: https://fam.tuwien.ac.at/~schamane/_/blog/2019-02-13_thunderbird_selfsigned.htm
-
-
+::
 
 
 
@@ -75,7 +74,7 @@ set klucz_publiczny_th1=01root.crt
 set klucz_publiczny_th2=02user.crt
 set fingerprint=fingerprint.txt
 set checksum=checksum.sha256
-set pass=tmp\pass.txt
+set pass=pass.txt
 set version=version.txt
 set klucz_do_uzytku_wewnetrznego=KLUCZ_PRYWATNY
 set klucz_do_uzytku_wewnetrznego_nazwa=TWOJ_KLUCZ.p12
@@ -101,6 +100,7 @@ echo ....::::  Tworzenie klucza ROOT  ::::....
 %openssl% genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:%dlugosc_klucza_root% -out priv\%root_klucz%
 %openssl% pkey -in priv\%root_klucz% -text -noout > priv\%root_klucz_inf%
 
+:: https://www.openssl.org/docs/manmaster/man5/x509v3_config.html
 echo.
 echo ....::::  Generowanie ustawien dla Root CA  ::::....
 echo [ req ]> priv\%root_cnf%
@@ -117,7 +117,7 @@ echo countryName=PL>> priv\%root_cnf%
 :: echo stateOrProvinceName=Mazowieckie>> priv\%root_cnf%
 :: echo localityName=Warszawa>> priv\%root_cnf%
 echo [ root_ext ]>> priv\%root_cnf%
-echo basicConstraints = critical,CA:TRUE,pathlen:1>> priv\%root_cnf%
+echo basicConstraints = critical,CA:TRUE,pathlen:0>> priv\%root_cnf%
 echo keyUsage = critical,keyCertSign,cRLSign>> priv\%root_cnf%
 echo extendedKeyUsage = clientAuth,emailProtection>> priv\%root_cnf%
 echo subjectKeyIdentifier = hash>> priv\%root_cnf%
@@ -133,6 +133,8 @@ echo ....::::  Tworzenie klucza e-mail  ::::....
 %openssl% genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:%dlugosc_klucza% -out priv\%klient_klucz%
 %openssl% pkey -in priv\%klient_klucz% -text -noout > priv\%klient_klucz_inf%
 
+:: https://stackoverflow.com/a/20547843
+:: https://github.com/JW0914/Wikis/tree/master/Scripts%2BConfigs/OpenSSL
 echo.
 echo ....::::  Generowanie ustawien dla certyfikatu e-mail  ::::....
 echo [ req ]> priv\%klient_cnf%
@@ -144,15 +146,18 @@ echo [ client_dn ]>> priv\%klient_cnf%
 echo commonName=%email%>> priv\%klient_cnf%
 :: echo organizationName=%o%>> priv\%klient_cnf%
 :: echo organizationalUnitName=Dział handlowy>> priv\%klient_cnf%
-:: echo emailAddress=%email%>> priv\%klient_cnf%
+echo emailAddress=%email%>> priv\%klient_cnf%
 echo [ smime ]>> priv\%klient_cnf%
 echo basicConstraints = critical,CA:FALSE>> priv\%klient_cnf%
 echo keyUsage = critical,digitalSignature,keyEncipherment>> priv\%klient_cnf%
 echo extendedKeyUsage = clientAuth,emailProtection>> priv\%klient_cnf%
 echo subjectKeyIdentifier = hash>> priv\%klient_cnf%
 echo authorityKeyIdentifier = keyid:always,issuer:always>> priv\%klient_cnf%
-echo subjectAltName = email:%email%>> priv\%klient_cnf%
-:: echo subjectAltName = email:%email%, email:b@edu.pl, email:c@edu.pl>> priv\%klient_cnf%
+echo subjectAltName = @alt_section>> priv\%klient_cnf%
+echo [alt_section]>> priv\%klient_cnf%
+echo email.1=%email%>> priv\%klient_cnf%
+:: echo email.2=b@edu.pl>> priv\%klient_cnf%
+:: echo email.3=c@edu.pl>> priv\%klient_cnf%
 
 echo.
 echo ....::::  Generowanie wniosku certyfikacyjnego CSR  ::::....
@@ -207,7 +212,7 @@ echo .... pod nazwa %klucz_do_uzytku_wewnetrznego_nazwa%
 echo ....
 echo .... NIE UDOSTEPNIAJ GO NIKOMU !
 echo ....
-echo .... wygeneruje sie haslo (znajdziesz je w %pass%)
+echo .... wygeneruje sie haslo (znajdziesz je w tmp\%pass%)
 echo .... bedzie potrzebne w programie pocztowym przy imporcie klucza.
 echo ....
 echo .... ZAPISZ JE na kartce albo skorzystaj z menadzera
@@ -215,7 +220,7 @@ echo .... hasel np. KeePassXC itp.
 echo ....
 echo .... po wygenerowaniu klucza usun ten plik! [Shift+Delete]
 echo ....
-echo .... -------- %pass% --------
+echo .... -------- tmp\%pass% --------
 echo ....
 :: lepsze zabezpieczenie, ale nie wszystkie programy otwierają, zamiast (-descert -macalg SHA1)
 :: -certpbe AES-256-CBC -keypbe AES-256-CBC -macalg SHA512
@@ -229,8 +234,12 @@ echo ....
 %openssl% x509 -in priv\%klient_crt%>> tmp\kombajn
 %openssl% x509 -in priv\%root_crt%>> tmp\kombajn
 :: https://superuser.com/a/724987
-%openssl% rand -base64 15 > %pass%
-%openssl% pkcs12 -export -name "%email%" -descert -macalg SHA1 -in tmp\kombajn -out %klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passout file:%pass%
+%openssl% rand -base64 15 > tmp\%pass%
+%openssl% pkcs12 -export -name "%email%" -descert -macalg SHA1 -in tmp\kombajn -out %klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passout file:tmp\%pass%
+echo.
+%openssl% pkcs12 -info -nokeys -noout -in %klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passin file:tmp\%pass%
+echo.
+
 echo ....
 echo ....::::  zrobione!  ::::....
 echo ....
@@ -267,15 +276,15 @@ echo .... * Dodaj podpis cyfrowy do wysylanych wiadomosci
 echo ....
 echo .... w Thunderbird 91, najpierw trzeba dodac .p12 w Menadzerze
 echo .... certyfikatow -- Uzytkownik -- Importuj, nastepnie trzeba wejsc
-echo .... w zakladke "Organy certyfikacji", wybrac swoja nazwe, kliknac
-echo .... "Edytuj ustawienia zaufania" i zaznaczyc "certyfikat identyfikuje
-echo .... uzytkownikow poczty"; nastepnie wybrac certyfikaty S/MIME w menu
-echo .... Szyfrowanie "end-to-end" i zaznaczyc "Domyslnie dodawaj moj
-echo .... podpis cyfrowy" i "Domyslnie wymagaj szyfrowania"
+echo .... w zakladke 'Organy certyfikacji', wybrac swoja nazwe, kliknac
+echo .... 'Edytuj ustawienia zaufania' i zaznaczyc 'certyfikat identyfikuje
+echo .... uzytkownikow poczty'; nastepnie wybrac certyfikaty S/MIME w menu
+echo .... Szyfrowanie 'end-to-end' i zaznaczyc 'Domyslnie dodawaj moj
+echo .... podpis cyfrowy' i 'Domyslnie wymagaj szyfrowania'
 echo ....
 echo .... Kleopatra/gpgsm 2.2.27 -- Najlepiej zrobic to przez cmd:
 echo .... gpgsm -v --import %klucz_do_uzytku_wewnetrznego_nazwa%
-echo .... w Kleopatrze certyfikat wyswietli sie w "Certyfikaty X509"
+echo .... w Kleopatrze certyfikat wyswietli sie w 'Certyfikaty X509'
 echo ....
 echo ....
 echo ....
@@ -295,15 +304,15 @@ echo .... MS Outlook/Windows pokazuje skrot SHA-1
 echo .... Mozilla SHA-1 i SHA-256
 echo .... Kleopatra SHA-1
 echo ....
-echo .... W Windows/Office importuj plik pub\%klucz_publiczny%. "Zainstaluj
-echo .... certyfikat".
+echo .... W Windows/Office importuj plik pub\%klucz_publiczny%. 'Zainstaluj
+echo .... certyfikat'.
 echo ....
 echo .... W Kleopatra importuj plik pub\%klucz_publiczny%.
 echo ....
-echo .... W Thunderbird w "Menadzerze certyfikatow" wybierz zakladke "Organy
-echo .... certyfikacji" i importuj plik pub\%klucz_publiczny_th1%. Zaznacz
-echo .... "Zaufaj temu CA przy identyfikacji uzytkownikow poczty". Teraz
-echo .... wejdz w zakladke "Osoby" i importuj plik
+echo .... W Thunderbird w 'Menadzerze certyfikatow' wybierz zakladke 'Organy
+echo .... certyfikacji' i importuj plik pub\%klucz_publiczny_th1%. Zaznacz
+echo .... 'Zaufaj temu CA przy identyfikacji uzytkownikow poczty'. Teraz
+echo .... wejdz w zakladke 'Osoby' i importuj plik
 echo .... pub\%klucz_publiczny_th2%.
 echo ....
 echo ....

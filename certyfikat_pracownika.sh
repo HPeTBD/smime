@@ -35,7 +35,7 @@ klucz_do_uzytku_wewnetrznego="KLUCZ_PRYWATNY"
 klucz_do_uzytku_wewnetrznego_nazwa="TWOJ_KLUCZ.p12"
 pass="pass.txt"
 
-OPENSSL_CONF="priv/$klient_cnf"
+OPENSSL_CONF="$alias/priv/$klient_cnf"
 
 mkdir $alias
 mkdir $alias/priv
@@ -69,8 +69,11 @@ echo keyUsage = critical,digitalSignature,keyEncipherment>> $alias/priv/$klient_
 echo extendedKeyUsage = clientAuth,emailProtection>> $alias/priv/$klient_cnf
 echo subjectKeyIdentifier = hash>> $alias/priv/$klient_cnf
 echo authorityKeyIdentifier = keyid:always,issuer:always>> $alias/priv/$klient_cnf
-echo subjectAltName = email:$email>> $alias/priv/$klient_cnf
-# echo subjectAltName = email:$email, email:szkolenia@edu.pl>> $alias/priv/$klient_cnf
+echo subjectAltName = @alt_section>> $alias/priv/$klient_cnf
+echo [alt_section]>> $alias/priv/$klient_cnf
+echo email.1=$email>> $alias/priv/$klient_cnf
+# echo email.2=b@edu.pl>> $alias/priv/$klient_cnf
+# echo email.3=c@edu.pl>> $alias/priv/$klient_cnf
 
 echo -e "\n"
 echo "....::::  Generowanie wniosku certyfikacyjnego CSR  ::::...."
@@ -130,18 +133,10 @@ openssl x509 -in priv/$root_crt>> $alias/tmp/kombajn
 
 openssl rand -base64 15 > $alias/tmp/$pass
 openssl pkcs12 -export -name "$email" -descert -macalg SHA1 -in $alias/tmp/kombajn -out $alias/$klucz_do_uzytku_wewnetrznego/$klucz_do_uzytku_wewnetrznego_nazwa -passout file:$alias/tmp/$pass
+echo -e "\n"
+openssl pkcs12 -info -nokeys -noout -in $alias/$klucz_do_uzytku_wewnetrznego/$klucz_do_uzytku_wewnetrznego_nazwa -passin file:$alias/tmp/$pass
+echo -e "\n"
 
 echo "...."
 echo "....::::  zrobione!  ::::...."
 echo "...."
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,5 @@
 echo -e "\n"
-echo "v4 25/03/2022"
+echo "v5 26/03/2022"
 echo -e "\n"
 echo "Skrypt generujacy klucz S/MIME."
 echo "Szyfrowanie i podpisywanie e-maili."
@@ -112,7 +112,7 @@ echo countryName=PL>> priv/$root_cnf
 # echo stateOrProvinceName=Mazowieckie>> priv/$root_cnf
 # echo localityName=Warszawa>> priv/$root_cnf
 echo [ root_ext ]>> priv/$root_cnf
-echo basicConstraints = critical,CA:TRUE,pathlen:1>> priv/$root_cnf
+echo basicConstraints = critical,CA:TRUE,pathlen:0>> priv/$root_cnf
 echo keyUsage = critical,keyCertSign,cRLSign>> priv/$root_cnf
 echo extendedKeyUsage = clientAuth,emailProtection>> priv/$root_cnf
 echo subjectKeyIdentifier = hash>> priv/$root_cnf
@@ -139,15 +139,18 @@ echo [ client_dn ]>> priv/$klient_cnf
 echo commonName=$email>> priv/$klient_cnf
 # echo organizationName=$o>> priv/$klient_cnf
 # echo organizationalUnitName=Dział handlowy>> priv/$klient_cnf
-# echo emailAddress=$email>> priv/$klient_cnf
+echo emailAddress=$email>> priv/$klient_cnf
 echo [ smime ]>> priv/$klient_cnf
 echo basicConstraints = critical,CA:FALSE>> priv/$klient_cnf
 echo keyUsage = critical,digitalSignature,keyEncipherment>> priv/$klient_cnf
 echo extendedKeyUsage = clientAuth,emailProtection>> priv/$klient_cnf
 echo subjectKeyIdentifier = hash>> priv/$klient_cnf
 echo authorityKeyIdentifier = keyid:always,issuer:always>> priv/$klient_cnf
-echo subjectAltName = email:$email>> priv/$klient_cnf
-# echo subjectAltName = email:$email, email:b@edu.pl, email:c@edu.pl>> priv/$klient_cnf
+echo subjectAltName = @alt_section>> priv/$klient_cnf
+echo [alt_section]>> priv/$klient_cnf
+echo email.1=$email>> priv/$klient_cnf
+# echo email.2=b@edu.pl>> priv/$klient_cnf
+# echo email.3=c@edu.pl>> priv/$klient_cnf
 
 echo -e "\n"
 echo "....::::  Generowanie wniosku certyfikacyjnego CSR  ::::...."
@@ -213,6 +216,9 @@ openssl x509 -in priv/$root_crt>> tmp/kombajn
 
 openssl rand -base64 15 > tmp/$pass
 openssl pkcs12 -export -name "$email" -descert -macalg SHA1 -in tmp/kombajn -out $klucz_do_uzytku_wewnetrznego/$klucz_do_uzytku_wewnetrznego_nazwa -passout file:tmp/$pass
+echo -e "\n"
+openssl pkcs12 -info -nokeys -noout -in $klucz_do_uzytku_wewnetrznego/$klucz_do_uzytku_wewnetrznego_nazwa -passin file:tmp/$pass
+echo -e "\n"
 
 echo "...."
 echo "....::::  zrobione!  ::::...."
@@ -294,6 +300,4 @@ echo "...."
 echo ".... Jesli zaimportowales $klucz_do_uzytku_wewnetrznego_nazwa na swoim komputerze,"
 echo ".... NIE MUSISZ importowac klucza publicznego!"
 echo "...."
-echo -e "\n"
-echo ".... mozesz teraz zamknac to okno"
 echo -e "\n"
