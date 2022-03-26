@@ -12,7 +12,7 @@ countryName=PL
 stateOrProvinceName=Mazowieckie
 localityName=Warszawa
 [ root_ext ]
-basicConstraints = critical,CA:TRUE,pathlen:1
+basicConstraints = critical,CA:TRUE,pathlen:0
 keyUsage = critical,keyCertSign,cRLSign
 extendedKeyUsage = clientAuth,emailProtection
 subjectKeyIdentifier = hash
