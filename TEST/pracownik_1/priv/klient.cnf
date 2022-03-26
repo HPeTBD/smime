@@ -14,4 +14,7 @@ keyUsage = critical,digitalSignature,keyEncipherment
 extendedKeyUsage = clientAuth,emailProtection
 subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always,issuer:always
-subjectAltName = email:anowak@edu.pl, email:szkolenia@edu.pl
+subjectAltName = @alt_section
+[alt_section]
+email.1=anowak@edu.pl
+email.2=szkolenia@edu.pl
