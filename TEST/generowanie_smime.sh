@@ -1,5 +1,5 @@
 echo -e "\n"
-echo "v5 26/03/2022"
+echo "v6 27/03/2022"
 echo -e "\n"
 echo "Skrypt generujacy klucz S/MIME."
 echo "Szyfrowanie i podpisywanie e-maili."
@@ -11,6 +11,7 @@ echo "Szyfrowanie i podpisywanie e-maili."
 # do sprawdzenia poprawności użyto guiDumpASN-ng, xca.exe 2.4.0
 # ustawienia podobne do klucza "Free S/MIME Certificates" od firmy Actalis S.p.A.
 # https://www.actalis.it/documenti-it/caact-free-s-mime-certificates-policy.aspx  [strony 11-12]
+# certyfikat S/MIME "Klasa 1/2"
 #
 # program wykonuje się w katalogu w którym znajduje się .sh
 #
