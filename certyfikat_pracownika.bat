@@ -5,7 +5,10 @@ echo Skrypt generujacy pod-klucz S/MIME.
 ::
 :: zobacz komentarze w pliku generowanie_smime.bat
 ::
-
+:: ustawienia podobne do klucza "Corporate S/MIME Certificates" od firmy Actalis S.p.A.
+:: https://www.actalis.it/documenti-en/corporate-s-mime-certificates-policy-en.aspx  [strony 14-15]
+:: certyfikat S/MIME "Klasa 3"
+::
 
 set openssl="C:\Program Files\OpenSSL-Win64\bin\openssl.exe"
 

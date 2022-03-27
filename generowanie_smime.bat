@@ -2,7 +2,7 @@
 :: podwójnie, bo Win7 wyrzuca błąd ...@echo (po wyedytowaniu Notatnikiem systemowym) i wszystko się sypie...
 @echo off
 echo.
-echo v5 26/03/2022
+echo v6 27/03/2022
 echo.
 echo Skrypt generujacy klucz S/MIME.
 echo Szyfrowanie i podpisywanie e-maili.
@@ -13,6 +13,7 @@ echo Szyfrowanie i podpisywanie e-maili.
 :: do sprawdzenia poprawności użyto guiDumpASN-ng, xca.exe 2.4.0
 :: ustawienia podobne do klucza "Free S/MIME Certificates" od firmy Actalis S.p.A.
 :: https://www.actalis.it/documenti-it/caact-free-s-mime-certificates-policy.aspx  [strony 11-12]
+:: certyfikat S/MIME "Klasa 1/2"
 ::
 :: program wykonuje się w katalogu w którym znajduje się .bat (pushd)
 ::
@@ -224,6 +225,7 @@ echo .... -------- tmp\%pass% --------
 echo ....
 :: lepsze zabezpieczenie, ale nie wszystkie programy otwierają, zamiast (-descert -macalg SHA1)
 :: -certpbe AES-256-CBC -keypbe AES-256-CBC -macalg SHA512
+:: https://www.schneier.com/academic/smime/
 :: musi być -macalg SHA1 bo nie otworzy w Win7 (wprowadzone hasło jest niepoprawne)
 ::
 :: %openssl% pkcs12 -export -name "%email%" -descert -macalg SHA1 -in priv\%klient_crt% -inkey priv\%klient_klucz% -certfile priv\%root_crt% -out %klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa%
@@ -233,8 +235,10 @@ echo ....
 %openssl% pkey -in priv\%klient_klucz%>> tmp\kombajn
 %openssl% x509 -in priv\%klient_crt%>> tmp\kombajn
 %openssl% x509 -in priv\%root_crt%>> tmp\kombajn
-:: https://superuser.com/a/724987
+
+:: tworzy hasło ok. 90-110 bit entropy
 %openssl% rand -base64 15 > tmp\%pass%
+:: https://superuser.com/a/724987
 %openssl% pkcs12 -export -name "%email%" -descert -macalg SHA1 -in tmp\kombajn -out %klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passout file:tmp\%pass%
 echo.
 %openssl% pkcs12 -info -nokeys -noout -in %klucz_do_uzytku_wewnetrznego%\%klucz_do_uzytku_wewnetrznego_nazwa% -passin file:tmp\%pass%

@@ -1,14 +1,18 @@
+v6 27/03/2022
+
+· dodano plik funkcje.md
+
+
 v5 26/03/2022
 
+· zmiana (security fix) `CA:TRUE,pathlen:0`
 · drobne zmiany
 
 
 v4 25/03/2022
 
 · dodano możliwość generowania "pracowniczych" certyfikatów
-
 · dodano screeny z Xubuntu
-
 · dodano folder 'TEST' z wygenerowanymi certyfikatami
 
 
@@ -21,13 +25,12 @@ v2 23/03/2022
 
 · dodano informację o użytej wersji OpenSSL w pliku priv\version.txt
 openssl version -a
-
 · dodano możliwość umieszczenia kilku adresów e-mail (nie testowano w programach pocztowych)
-1. usuń linię:
-	echo subjectAltName = email:%email%>> priv\%klient_cnf%
-2. odkomentuj linię:
-	:: echo subjectAltName = email:%email%, email:b@edu.pl, email:c@edu.pl>> priv\%klient_cnf%
-3. zmień adresy:
-b@edu.pl, c@edu.pl
-
+  odkomentuj linię i zmień adres:
+	:: echo email.2=b@edu.pl>> priv\%klient_cnf%
 · dodano nowe odnośniki
+
+
+v1 17/02/2022
+
+· wersja pierwsza

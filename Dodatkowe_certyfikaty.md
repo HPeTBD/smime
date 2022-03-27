@@ -110,7 +110,7 @@ Aneta Rachunek | faktury@edu.pl | [p7b](/faktury.p7b) | [crt](/faktury.crt) | `9
 Piotr Niedopomagalski | pomoc@edu.pl | [p7b](/pomoc.p7b) | [crt](/pomoc.crt) | `AB:50:59:38:41:EC:3D:39:05:20:DD:67:8A:C7:C6:EF:62:F9:E2:85`
 
 ## [Dodatkowe bezpieczeństwo] Stosuj klucze zewnętrzne Yubico/Nitrokey
-Dla każdego pracownika kup klucz (crypto-stick). Nie przenoś kluczy prywatnych (.p12, katalog priv) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
+Dla każdego pracownika kup klucz (crypto-stick). [Nie przenoś kluczy prywatnych](https://arstechnica.com/information-technology/2016/12/signal-does-not-replace-pgp/) (.p12, katalog priv) na urządzenia codziennego użytku. Podczas tworzenia kluczy użyj dedykowanego komputera nie podłączonego pod internet np. Live-CD z oprogramowaniem do kopiowania kluczy na crypto-sticka. Zachowaj kopie wygenerowanych plików w bezpiecznym miejscu np. na pendrive; nie podłączaj go do komputera codziennego użytku.
 
 ![01](img/01.png)
 
