@@ -31,6 +31,7 @@ plik | funkcja
 `.cnf`, `.srl` | pliki konfiguracyjne
 `.txt` | logi z przeprowadzonych operacji
 
+
 ```mermaid
 graph TD;
 A[Root CA] -->B(root.pem)
@@ -41,6 +42,7 @@ D -->F(klient.crt)
 F -->G(publiczny.p7b)
 E -->H(prywatny.p12)
 ```
+
 
 ```mermaid
 graph TD;
@@ -136,5 +138,7 @@ Zobacz komentarze w pliku `generowanie_smime.bat`.
 ---
 
 · [Encrypted e-mail](https://arstechnica.com/information-technology/2013/06/encrypted-e-mail-how-much-annoyance-will-you-tolerate-to-keep-the-nsa-away/)
+
 · [How to secure your e-mail under Mac OS X and iOS 5 with S/MIME](https://arstechnica.com/gadgets/2011/10/secure-your-e-mail-under-mac-os-x-and-ios-5-with-smime/)
+
 · [S/MIME, Email and Yubikey](https://blog.ligos.net/2017-01-02/Smime-Email-and-Yubikey.html)
