@@ -31,65 +31,24 @@ plik | funkcja
 `.cnf`, `.srl` | pliki konfiguracyjne
 `.txt` | logi z przeprowadzonych operacji
 
+![01](svg/01.svg)
 
-```mermaid
-graph TD;
-A[Root CA] -->B(root.pem)
-A -->C(root.crt)
-C -->D[USER e-mail]
-D -->E(klient.pem)
-D -->F(klient.crt)
-F -->G(publiczny.p7b)
-E -->H(prywatny.p12)
-```
-
-
-```mermaid
-graph TD;
-A[Firma sp. z o.o.] -->B(root.pem)
-A -->C(root.crt)
-C -->D[Jan Kowalski]
-D -->E(klient.pem)
-D -->F(klient.crt)
-F -->G(jkowalski.p7b)
-E -->H(jkowalski.p12)
-C -->I[Adam Nowak]
-I -->J(klient.pem)
-I -->K(klient.crt)
-K -->L(anowak.p7b)
-J -->M(anowak.p12)
-C -->N[itd.]
-```
+![02](svg/02.svg)
 
 ## Schemat klucza `.p12`
 
-```mermaid
-graph TD;
-A(prywatny.p12) -->B(klient.pem)
-A -->C(klient.crt)
-A -->D(root.crt)
-```
+![03](svg/03.svg)
 
 ## Schemat klucza `.p7b`
 
-```mermaid
-graph TD;
-A(publiczny.p7b) -->B(klient.crt)
-A -->C(root.crt)
-```
+![04](svg/04.svg)
 
 ## W katalogu `TEST` znajdują się wygenerowane pliki testowe
 Sprawdź czy działają w twoim programie pocztowym.
 
 ## Schemat wygenerowanych folderów
 
-```mermaid
-graph TD;
-A[generowanie_smime.bat] -->B(priv)
-A -->C(pub)
-A -->D(tmp)
-A -->E(KLUCZ_PRYWATNY)
-```
+![05](svg/05.svg)
 
 folder | funkcja
 | ----------- | -----------
@@ -98,18 +57,7 @@ pub | klucze publiczne (certyfikaty) `.p7b`, odcisk (fingerprint) klucza, suma k
 tmp | folder tymczasowy, HASŁO do otwarcia pliku `.p12`
 KLUCZ_PRYWATNY | klucz prywatny `.p12` (importuj do programu pocztowego / na klucz YubiKey)
 
-```mermaid
-graph TD;
-A[generowanie_smime.bat] -->B(priv)
-A -->C(pub)
-A -->D(tmp)
-A -->E(KLUCZ_PRYWATNY)
-F[certyfikat_pracownika.bat] --> G(pracownik_1)
-G -->H(priv)
-G -->I(pub)
-G -->J(tmp)
-G -->K(KLUCZ_PRYWATNY)
-```
+![06](svg/06.svg)
 
 ## S/MIME vs GnuPG
 [![GnuPG](https://imgs.xkcd.com/comics/pgp.png)](https://xkcd.com/1181/)
